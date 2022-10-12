@@ -1,4 +1,21 @@
 from collections import deque
+from colorama import Fore, Back
+
+
+class Colors:
+    red_system = Fore.RED + Back.BLACK  # for wrong input
+    blue_system = Fore.BLUE + Back.BLUE  # for entering input
+    red = Fore.RED  # for player mark coloring
+    blue = Fore.BLUE  # for player mark coloring
+    green = Fore.GREEN  # for player mark coloring
+    yellow = Fore.YELLOW  # for player mark coloring
+    black = Fore.BLACK  # for player mark coloring
+    magenta = Fore.MAGENTA  # for player mark coloring
+    cyan = Fore.CYAN  # for player mark coloring
+    white = Fore.WHITE  # for player mark coloring
+
+
+colors_list = ['red', 'blue', 'green', 'yellow', 'black', 'magenta', 'cyan', 'white']
 
 
 def player_details(user_input):
@@ -7,7 +24,7 @@ def player_details(user_input):
     try:  # check vor valid input
         number_of_players = int(user_input)
     except ValueError:
-        user_input = input('Please select number of players between 1 and 9 >>> ')
+        user_input = input(Fore.YELLOW + 'Please select number of players between 1 and 9 >>> ')
         return player_details(user_input)
 
     player_details_dict = {}  # use dictionary for player screen name and player symbol
@@ -109,6 +126,10 @@ def column_choosing(queue, matrix, num_matrix_rows, num_matrix_cols, winning_mov
 
                 break  # founded slot for player coin
 
+        for row in matrix:
+            print(row)
+
+
         win = check_for_win(matrix, num_matrix_rows, num_matrix_cols, winning_movements, player_symbol)
 
     if win:
@@ -118,7 +139,7 @@ def column_choosing(queue, matrix, num_matrix_rows, num_matrix_cols, winning_mov
         return f'No winner. The game ends with a draw!'
 
 
-number_of_players_input = input('Please select number of players between 1 and 9 >>> ')
+number_of_players_input = input(Colors.red + 'Please select number of players between 1 and 9 >>> ')
 
 matrix_field_rows, matrix_field_cols = 6, 7  # that is tha classical board for this game
 matrix_field = [['0' for _ in range(matrix_field_cols)] for _ in range(matrix_field_rows)]
