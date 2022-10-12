@@ -4,7 +4,7 @@ from colorama import Fore, Back
 
 class Colors:
     red_system = Fore.RED + Back.BLACK  # for wrong input
-    blue_system = Fore.BLUE + Back.BLUE  # for entering input
+    blue_system = Fore.BLUE + Back.BLACK  # for entering input
     red = Fore.RED  # for player mark coloring
     blue = Fore.BLUE  # for player mark coloring
     green = Fore.GREEN  # for player mark coloring
@@ -24,28 +24,28 @@ def player_details(user_input):
     try:  # check vor valid input
         number_of_players = int(user_input)
     except ValueError:
-        user_input = input(Fore.YELLOW + 'Please select number of players between 1 and 9 >>> ')
+        user_input = input(Colors.blue_system + 'Please select number of players between 1 and 9 >>> ')
         return player_details(user_input)
 
     player_details_dict = {}  # use dictionary for player screen name and player symbol
     for current_num in range(1, number_of_players + 1):
-        player_name = input(f'Player {current_num}, please choose your screen name >>> ')
+        player_name = input(Colors.blue_system + f'Player {current_num}, please choose your screen name >>> ')
 
         if player_name in player_details_dict:
             used_screen_name = True
 
             while used_screen_name:
-                player_name = input(f'{player_name} is already taken! Please choose another one >>> ')
+                player_name = input(Colors.red_system + f'{player_name} is already taken! Please choose another one >>> ')
 
                 if player_name not in player_details_dict:
                     break
 
-        player_symbol = input(f'{player_name} please enter your playing mark! Only one symbol >>> ')
+        player_symbol = input(Colors.blue_system + f'{player_name} please enter your playing mark! Only one symbol >>> ')
         if len(player_symbol) != 1:
             player_symbol_too_short = True
 
             while player_symbol_too_short:
-                player_symbol = input(f'{player_name} your mark is too long, please enter it again >>> ')
+                player_symbol = input(Colors.red_system + f'{player_name} your mark is too long, please enter it again >>> ')
                 if len(player_symbol) == 1:
                     break
 
@@ -54,7 +54,7 @@ def player_details(user_input):
 
             while player_symbol_is_taken:
                 player_symbol = \
-                    input(f'{player_name} "{player_symbol}" is already taken, please choose another one >>> ')
+                    input(Colors.red_system + f'{player_name} "{player_symbol}" is already taken, please choose another one >>> ')
                 if player_symbol not in player_details_dict.values():
                     break
 
@@ -106,7 +106,7 @@ def column_choosing(queue, matrix, num_matrix_rows, num_matrix_cols, winning_mov
         chosen_column = 0
         while True:
             try:
-                chosen_column = int(input(f'{player_name}, please select one of the following {", ".join(map(str, free_column))} where to drop your coin >>> '))
+                chosen_column = int(input(Colors.blue_system + f'{player_name}, please select one of the following {", ".join(map(str, free_column))} where to drop your coin >>> '))
 
                 if 1 > chosen_column > 7 or chosen_column not in free_column:
                     continue
@@ -126,20 +126,30 @@ def column_choosing(queue, matrix, num_matrix_rows, num_matrix_cols, winning_mov
 
                 break  # founded slot for player coin
 
-        for row in matrix:
-            print(row)
+        for num in range(1, num_matrix_cols + 1):  # numbering of columns in the output
+            print(Colors.yellow + f"{num}", end=' ')
+        print()
 
+        for row in matrix:  # printing current status of the game
+            for col in row:
+
+                if col == '0':
+                    print(Colors.green + '0', end=' ')
+                else:
+                    print(Colors.red + f'{col}', end=' ')
+
+            print()
 
         win = check_for_win(matrix, num_matrix_rows, num_matrix_cols, winning_movements, player_symbol)
 
     if win:
-        return f'{player_name} win the game'
+        return Colors.cyan + f'{player_name} win the game'
 
     if not free_column:
-        return f'No winner. The game ends with a draw!'
+        return Colors.yellow + f'No winner. The game ends with a draw!'
 
 
-number_of_players_input = input(Colors.red + 'Please select number of players between 1 and 9 >>> ')
+number_of_players_input = input(Colors.blue + 'Please select number of players between 1 and 9 >>> ')
 
 matrix_field_rows, matrix_field_cols = 6, 7  # that is tha classical board for this game
 matrix_field = [['0' for _ in range(matrix_field_cols)] for _ in range(matrix_field_rows)]
