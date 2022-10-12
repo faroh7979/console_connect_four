@@ -7,7 +7,7 @@ def player_details(user_input):
     try:  # check vor valid input
         number_of_players = int(user_input)
     except ValueError:
-        user_input = input('Please select a number between 1 and 9 >>> ')
+        user_input = input('Please select number of players between 1 and 9 >>> ')
         return player_details(user_input)
 
     player_details_dict = {}  # use dictionary for player screen name and player symbol
@@ -48,7 +48,7 @@ def player_details(user_input):
 
 
 def check_for_win(current_matrix, matrix_row, matrix_col, possible_movements, current_player_symbol):
-    for current_row_index in range(matrix_row):
+    for current_row_index in range(matrix_row):  # this check starting from top row, need optimisations
         for current_column_index in range(matrix_col):
             if current_matrix[current_row_index][current_column_index] != current_player_symbol:  # no chance for winning
                 continue
@@ -61,7 +61,7 @@ def check_for_win(current_matrix, matrix_row, matrix_col, possible_movements, cu
                 for winning_streak in range(3):  # need three in a row from current position to take the win
 
                     # check for invalid index
-                    if 0 > new_row_index >= matrix_field_rows or 0 > new_col_index >= matrix_field_cols:
+                    if 0 > new_row_index or new_row_index >= matrix_row or 0 > new_col_index or new_col_index >= matrix_col:
                         break
                     if current_matrix[new_row_index][new_col_index] != current_player_symbol:
                         break
@@ -118,7 +118,7 @@ def column_choosing(queue, matrix, num_matrix_rows, num_matrix_cols, winning_mov
         return f'No winner. The game ends with a draw!'
 
 
-number_of_players_input = input('Please select a number between 1 and 9 >>> ')
+number_of_players_input = input('Please select number of players between 1 and 9 >>> ')
 
 matrix_field_rows, matrix_field_cols = 6, 7  # that is tha classical board for this game
 matrix_field = [['0' for _ in range(matrix_field_cols)] for _ in range(matrix_field_rows)]
@@ -135,6 +135,6 @@ possible_winning_directions = (
 )
 
 queue_one, initial_matrix = player_details(number_of_players_input)
-new_matrix = column_choosing(queue_one, initial_matrix, matrix_field_rows, matrix_field_cols, possible_winning_directions)
+new_matrix = column_choosing(queue_one, matrix_field, matrix_field_rows, matrix_field_cols, possible_winning_directions)
 
 print(new_matrix)
