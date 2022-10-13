@@ -95,7 +95,13 @@ def check_for_win(current_matrix, matrix_row, matrix_col, possible_movements, cu
 def column_choosing(queue, matrix, num_matrix_rows, num_matrix_cols, winning_movements):
     free_column = [int(i) for i in range(1, num_matrix_cols + 1)]
     win = False
-    player_name = ''
+
+    for row in matrix:  # printing current status of the game
+
+        for _ in row:
+            print(Colors.green + '0', end=' ')
+
+        print()
 
     while not win:
         player_on_turn = queue.popleft()
@@ -142,11 +148,11 @@ def column_choosing(queue, matrix, num_matrix_rows, num_matrix_cols, winning_mov
 
         win = check_for_win(matrix, num_matrix_rows, num_matrix_cols, winning_movements, player_symbol)
 
-    if win:
-        return Colors.cyan + f'{player_name} win the game'
+        if win:
+            return Colors.cyan + f'{player_name} win the game'
 
-    if not free_column:
-        return Colors.yellow + f'No winner. The game ends with a draw!'
+        elif not free_column:
+            return Colors.yellow + f'No winner. The game ends with a draw!'
 
 
 number_of_players_input = input(Colors.blue + 'Please select number of players between 1 and 9 >>> ')
